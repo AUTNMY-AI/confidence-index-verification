@@ -2,17 +2,15 @@
 
 Independently verify **The Road to Autonomy Confidence Indices**.
 
-Every twelve hours, the four Confidence Index readings (Robotaxi, Autonomous
-Driving Licensing, Autonomous Trucks, Delivery Bots) are serialized in a fixed
-canonical form, hashed into a single RFC 6962 Merkle tree, and the resulting
-32-byte root is timestamped by independent RFC 3161 Time-Stamping Authorities
-(DigiCert and Sectigo). This tool recomputes that root from the published
-readings and checks it against the anchored tokens, with **no trust in AUTNMY AI
-required**.
+Every twelve hours, each publish Confidence Index reading is sealed and its Merkle root is time-stamped by independent RFC 3161 Time-Stamping Authorities. Using only the public files for a sealed cycle, this tool recomputes the root from the published values and confirms it matches the externally anchored timestamp.
 
-It proves **integrity** (a reading was not altered after sealing) and **timing**
-(it existed at the certified time). It does **not** assess correctness; that is
-governed by the methodology. This is a separate seal lineage from the flagship
+It proves exactly two things, and only these two:
+
+- **Integrity** — a published value was not altered after it was sealed.
+- **Timing** — the value existed at the certified time, attested by an
+  authority whose clock the publisher does not control.
+
+This is a separate seal lineage from the flagship
 indices verifier ([indices-verification](https://github.com/AUTNMY-AI/indices-verification)).
 
 ## Install
