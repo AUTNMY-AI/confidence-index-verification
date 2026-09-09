@@ -33,12 +33,13 @@ LEAF_KIND = "confidence"
 
 def build_confidence_leaf(*, index: str, methodology_version: str, headline,
                           band: str, pillars, source_snapshot: str,
-                          computed_at_utc: str, cadence: str = C.CADENCE) -> dict:
+                          computed_at_utc: str, cadence: str = C.CADENCE,
+                          kind: str = LEAF_KIND) -> dict:
     """Rebuild one canonical Confidence leaf from its published fields, exactly
     as the server sealed it. Any altered value changes the leaf and breaks the
     root: that is the tamper-detection property."""
     return {
-        "kind": LEAF_KIND,
+        "kind": kind,
         "index": index,
         "methodology_version": methodology_version,
         "headline": C.format_score(headline),
@@ -73,6 +74,7 @@ def _ordered_leaf_bytes(cells_doc: dict) -> Tuple[List[bytes], List[dict]]:
             source_snapshot=c["source_snapshot"],
             computed_at_utc=c["computed_at_utc"],
             cadence=c.get("cadence", C.CADENCE),
+            kind=c.get("kind", LEAF_KIND),
         )
         leaves.append(leaf)
     leaves.sort(key=lambda lf: lf["index"])
